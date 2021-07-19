@@ -1,0 +1,57 @@
+View 환경설정.
+
+welcome page 만들기.
+
+HTML페이지로 구현.
+src-main-resources-static에 index.html로 추가해놓으면 그게 기본 페이지가 된다.
+
+
+Spring이 2003년 퍼블리싱 된 후 자바 웹 생태계 전반을 책임지는 framework가 되었고,
+Spring boot는 Spring을 한번 감싸서 더 편리하게 쓸 수 있도록 도와주는 역할을 제공.
+
+Spring의 모든 기능들을 외운다? 불가능.
+내가 필요한 기능을 "검색"해서 "적용"하는 능력이 필요함.
+
+spring.io에 들어가서 learn의 features에서 어떻게 찾는지가 중요.
+(Spring에서 제공하는 메뉴얼을 키워드에 맞게 검색하는 능력이 중요)
+
+웹 App에서 첫번째 진입점인, Controller 생성.
+
+main-java-hello.hellospring-controller 패키지 생성 및 HelloController 클래스 생성.
+
+이 Controller는 MVC(Model View Controller)패턴에서 Model을 받아서 제어하는
+Controller의 역할을 함.
+그래서 Hello 메서드의 파라미터로 Model을 받아서
+model.addAttribute(attributeName,attributeValue)로
+html에서 Name을 호출하면, Value를 반환하는 형태.
+
+그다음 thymeleaf template을 추가한 html페이지에서 data를 호출시, 내가 지정한 hello!가 반환됨.
+
+
+이렇게 동작하는 로직을 대충 표현해보자면,
+웹브라우저에서 localhost:8080/hello(내장서버) 호출하면 톰캣 서버에서 스프링한테
+뒤에 붙은 hello에 대한 물음을 던짐. 그럼 HelloController의 GetMapping으로 annotation된
+"hello"가 mapping되는것. 그러면 인자로 넘겨받은 model에 속성을 더해서(name,value)
+hello를 return함.
+이 hello를 return하면 어디서 받냐?
+resource-template에서 받음.(화면 구현=View를 위해서)->ViewResolver.
+
+
+->여기까지가 static page(welcome page) template page 구현을 해봤음.
+
+
+
+빌드하고 실행하기
+Windows PowerShell써야함.(또는 cmd) cmd에선 ls가 dir.
+
+내가 실행하고자하는 폴더경로까지 cd-> ls반복해서 하던가, 그냥 주소 그대로 복붙해서 cd하던가
+해서 경로 지정 완료
+
+./gradlew build (cmd에선 gradlew.bat)
+
+cd build/libs
+
+ls해서 실행할 jar파일 복붙해서
+java -jar 복붙->실행완료
+
+->빌드하고 실행하기.
