@@ -1,0 +1,77 @@
+스프링 입문 7일차
+
+회원 웹 기능 구현
+
+홈화면 추가
+
+웹페이지 구현에 있어서
+저번 시간에 기본페이지(웰컴 페이지)는 hello-static.html로 정했는데
+지금 홈컨트롤러랑 해당 html을 추가했더니, 그대로 나옴
+why?스프링에서 클라이언트의 웹 브라우징을 처리하는 프로세싱은
+1.스프링 컨테이너에 있는 컨트롤러가 있는지 먼저 찾고
+2.없으면 static html을 찾음.
+
+그래서 GetMapping("/")가 html에 매핑되서 home화면이 바뀌어서 출력됨.
+
+html의 경로에 따라 해당되는 컨트롤러가 작동하려면
+1.@Getmapping("/해당경로") 붙이기.
+
+
+
+
+회원등록
+
+회원가입 로직이 실행되는 원리
+
+1.url창에 html get형식(직접 경로 찾아가는)으로 createForm 호출
+2.createMemberForm html 호출
+3.해당 htmp을 보면
+<form action="/members/new" method="post">
+<input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+라고 되어있는데
+input type의 행동이 끝나면 action을 method 방식으로 작동
+->PostMapping으로 연결됨
+
+GetMapping은 조회
+PostMapping은 데이터를 전달할때 사용
+
+그래서 mapping된 html이 같아도, 다른 동작을 수행할수 있음.
+
+4.create에 인자로 들어온 MemberForm 객체를 통해 해당 클래스의 name을 통해
+이름을 받고, member객체 생성후 member.setName으로 form.getName을 넘기고
+memberService.join(member)로 회원 가입 시키면 됨.
+
+*get,post,form관련 html 지식.
+
+
+
+
+회원조회
+
+ <tr th:each="member : ${members}">
+                <td th:text="${member.id}"></td>
+                <td th:text="${member.name}"></td>
+            </tr>
+
+thymeleaf로직으로 each문을 돌면서 model에 있는 members객체를 가져와서 id랑 name접근.
+
+
+
+
+->홈화면 추가는 홈컨트롤러를 만들어서 static보다 먼저 내가 설정한 홈화면이 출력되게끔
+url을 redirect하는것.
+
+->회원 등록 조회는 비즈니스 로직에 해당되기때문에
+MemberController에 @GetMapping @PostMapping으로 url을 매핑시켜서
+다시 url을 return한다던지, member 객체를 받아서 memberService에 join한다던지
+List로 memberService의 모든 멤버를 찾아 넣고 다시 url을 return해준다던지 하면 됨.
+
+->여기서 컨트롤러의 코드가 깔끔한 이유는
+html의 문법으로 나머지 부분들(화면, 버튼, 클릭등등)이 구현되고 실행되기때문에
+실질적으로 어떻게 데이터를 다룰지만 구현하면 되기때문.
+
+
+
+
+
+
