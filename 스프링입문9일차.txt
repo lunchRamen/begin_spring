@@ -1,0 +1,79 @@
+스프링 입문 9일차
+
+________________________________________________________
+
+jdbcTemplate 사용.(실무에서도 자주쓰임)
+똑같이 MemberRepository의 구현체로써 동작.
+다른점: JdbcTemplate를 import받아서
+datasource를 jdbcTemplate의 인자로 넘겨줘서 동작.
+->Dependency Injection(데이터를 주입해줌)
+
+*팁:스프링 빈으로 올라갈 클래스의 생성자가 "한개"인 경우,
+@Autowired 어노테이션을 생략할 수 있다.
+람다식으로 바꿀 수 있는 메서드의 경우, alt+enter로 가능.
+해당 expression을 넣을수 있는 variable 호출 단축키
+ctrl+alt+v.
+
+findById를 구현해보면 알다시피
+jdbc를 하드코딩한거랑 jdbcTemplate로 구현한 쿼리문이랑
+비교해보면 차이가 많이남.
+
+테스트코드를 잘 짜야함.(오히려 프로그램 코드보다 짜는시간이
+많이 드는 경우가 많음. 가능한 모든 버그를 디버깅하기위한
+테스트케이스들)
+________________________________________________________
+
+JPA
+sql쿼리도 자동 처리해주는 기술.
+단순히 자동처리보다 데이터 중심에서 객체 중심 설계로
+패러다임 전환 가능-> 개발 생산성 크게 증가.
+
+데이터와 객체를 mapping 시켜주고,
+데이터 테이블을 알아서 만들어주기도 함.
+ORM(Object Relational Mapping)
+
+도메인의 Member 클래스(데이터로써 작동하는 클래스)를
+Entity화 시켜서 PK id설정 후
+만약 db와 이름이 다른 변수의 경우
+@Column(name=db속성)하면 매칭됨.
+
+JdbcTemplate에선 template이,
+JPA에선 EntityManager가 데이터를 관리해줌(컨테이너에서)
+em은 datasource도 가지고있어서 인젝션을 em을 해줌.
+
+em에 특정 메서드들을 활용하면, 내가 원하는 db처리가 다 됨.
+
+*팁 inline하고 싶으면 ctrl+alt+n으로 하면 줄여질코드는 줄여짐.
+
+JPA에서 쓰는 특정 쿼리(JPQL)
+객체를 대상으로 쿼리를 날리는것(sql로 번역되서 전달)
+em.createQuery("select m from Member m", Member.class)
+.getResultList();
+이러면 모든 Member를 List에 담아서 return해줌.
+특징: 객체자체에 대해 select함.(특정 속성이나 테이블이 아니라)
+
+
+PK기반으로 구현하는 메서드의 경우 간단히 구현 가능하지만
+이외에 속성들을 가져오려면 JPQL쿼리문이 필요하다.
+findById는 쿼리x findByName,findAll:쿼리필요.
+
+jpa를 쓰려면 선제조건:트랜잭션이 있어야함
+왜?모든 데이터 변경이 트랜잭션 이내에서 실행되어야하기때문.
+spring.datasource.username=sa이걸 안해줘서 다 오류나서
+매우매우 당황했었음. 데이터베이스를 연결해주는 코드였던듯.
+
+testcode에서 트랜잭션이 일어나도 데이터 변동 확인 하는법
+@Commit.
+
+
+*stream함수에 대해 알아두기.트랜잭션 알아두기.
+
+
+
+
+
+
+
+
+
+
